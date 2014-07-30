@@ -6,6 +6,7 @@ A cache model that uses HSPICE to get better estimates for energy and delay.
 To run, modify the appropriate parameters in scripts/config.yaml, then:
 
 ```
+$ source mod_setup.bash
 $ cd scripts
 $ python cache.py config.yaml
 ```
