@@ -1,0 +1,10 @@
+** Parametrized NAND2
+
+.subckt inv a y vdd_l
+mp1    y  a  vdd_l  vdd_l  pmos L=2 W='Wp'
+mn1    y  a  0      0      nmos L=2 W='Wn'
+.ends
+
+.subckt dut a y vdd_l
+x1     a  y      vdd_l  inv
+.ends

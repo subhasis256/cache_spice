@@ -1,0 +1,11 @@
+# all spice output files
+*0
+
+# all python class files
+*.pyc
+
+# all log files
+*.log
+
+# vim swap files
+*.swp

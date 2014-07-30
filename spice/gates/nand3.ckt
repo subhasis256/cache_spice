@@ -1,0 +1,14 @@
+** Parametrized NAND3
+
+.subckt nand3 a b c y vdd_l
+mp1    y  a  vdd_l  vdd_l  pmos L=2 W='Wp'
+mp2    y  b  vdd_l  vdd_l  pmos L=2 W='Wp'
+mp2    y  c  vdd_l  vdd_l  pmos L=2 W='Wp'
+mn1    y  a  n1     0      nmos L=2 W='Wn'
+mn1    n1 b  n2     0      nmos L=2 W='Wn'
+mn2    n2 c  0      0      nmos L=2 W='Wn'
+.ends
+
+.subckt dut a y vdd_l
+x1     a  vdd  vdd  y      vdd_l  nand3
+.ends

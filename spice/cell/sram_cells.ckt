@@ -1,0 +1,97 @@
+** The 6T cell array definition
+**
+** This file contains the corner
+** cell definitions for an SRAM array with
+** configurable width and height, which can be
+** utilized to create more complex designs.
+** The array does not include the decoders
+** and the sense amplifiers but includes the
+** precharge unit
+
+** Library name: schem
+** Cell name: mc
+** View name: schematic
+** A 6T SRAM cell
+.subckt mc bl bl_b wl inh_bulk_n inh_bulk_p
+m5 bit bit_b 0 inh_bulk_n nmos L=2 W=6
+m4 bit_b bit 0 inh_bulk_n nmos L=2 W=6
+m1 bl_b wl bit_b inh_bulk_n nmos L=2 W=4
+m0 bl wl bit inh_bulk_n nmos L=2 W=4
+m2 bit_b bit vdd! inh_bulk_p pmos L=2 W=4
+m3 bit bit_b vdd! inh_bulk_p pmos L=2 W=4
+c2 bl 0 88e-18
+c1 bl_b 0 88e-18
+c0 wl 0 140e-18
+.ends mc
+** End of subcircuit definition.
+
+** Library name: ee313
+** Cell name: inv
+** View name: schematic
+.subckt inv_pcell_0 a y
+m1 y a vdd! vdd! pmos L=2 W=8
+m2 y a 0 0 nmos L=2 W=4
+.ends inv_pcell_0
+** End of subcircuit definition.
+
+** Library name: ee313
+** Cell name: inv
+** View name: schematic
+.subckt inv_pcell_1 a y
+m1 y a vdd! vdd! pmos L=2 W=12
+m2 y a 0 0 nmos L=2 W=24
+.ends inv_pcell_1
+** End of subcircuit definition.
+
+** Library name: schem
+** Cell name: write
+** View name: schematic
+** The bit line precharge unit
+.subckt write bl0 bl_b0 clk wrdata wren0 inh_bulk_n inh_bulk_p
+m5 bl0 clk vdd! inh_bulk_p pmos L=2 W=80
+m1 bl0 clk bl_b0 inh_bulk_p pmos L=2 W=80
+m0 bl_b0 clk vdd! inh_bulk_p pmos L=2 W=80
+m4 net23 wren0 bl_b0 inh_bulk_n nmos L=2 W=90
+m3 net26 wren0 bl0 inh_bulk_n nmos L=2 W=90
+xu0 wrdata net18 inv_pcell_0
+xu2 wrdata net23 inv_pcell_1
+xu1 net18 net26 inv_pcell_1
+.ends write
+** End of subcircuit definition.
+
+
+** Library name: project_2012_part1_sol
+** Cell name: task3
+** View name: schematic
+
+** The memory cells.
+** We model the BL, BR, TL, TR cells.
+** We assume that the bitline precharge units
+** are located at the top of each line
+** and the decoders are at the left.
+** Note that there is not divided wordline
+** in this array.
+** Divided wordlines would be implemented by
+** putting a lot of these arrays in parallel
+** and using a local wordline to drive each array
+** @params
+** @Nw: the "width" of this array, i.e., number of cells
+**      connected to each wordline
+** @Nh: the "height" of this array, i.e., the number of cells
+**      connected to each bitline
+**.subckt mcarray clk write bl0 bl_b0 bln bl_bn wl0 wln Nh=256 Nw=256
+xcbl  bl0    bl_b0  wln  0  vdd!  mc  m=1
+xi5   net57  net56  wln  0  vdd!  mc  m='Nw-2'
+xcbr  bln    bl_bn  wln  0  vdd!  mc  m=1
+xi4   bln    bl_bn  0    0  vdd!  mc  m='Nh-2'
+xi3   net57  net56  0    0  vdd!  mc  m='(Nw-2)*(Nh-2)'
+xi2   bl0    bl_b0  0    0  vdd!  mc  m='Nh-2'
+xctl  bl0    bl_b0  wl0  0  vdd!  mc  m=1
+xi1   net57  net56  wl0  0  vdd!  mc  m='Nw-2'
+xctr  bln    bl_bn  wl0  0  vdd!  mc  m=1
+
+** The bit line precharge units
+xwritel  bl0    bl_b0   clk  vdd! 0 0 vdd! write m=1
+xwritem  net57  net56   clk  vdd! 0 0 vdd! write m='Nw-2'
+xwriter  bln    bl_bn   clk  vdd! 0 0 vdd! write m=1
+**.ends
