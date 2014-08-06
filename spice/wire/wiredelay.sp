@@ -1,6 +1,7 @@
 ** A model for a repeater line with model parameters from PTM
 
-.param supply=1
+.param supply=0.6
+.temp 40
 .option scale=0.022u
 .option accurate post
 .option dcic=0
@@ -10,7 +11,7 @@
 .option list
 .op
 .protect
-.lib '/afs/ir.stanford.edu/class/ee313/lib/opConditions.lib' TTTT
+.lib '/afs/ir.stanford.edu/class/ee313/lib/model_ptm045.lib' SS
 .unprotect
 
 V_supply vdd 0 dc=supply
@@ -159,5 +160,8 @@ Vclk in  0 pwl(    0.000ns 0        0.125ns 0
 
 .meas TRAN t_permm_nsmm
 + PARAM='td_in2out/(length*1000)*1g'
+
+.meas TRAN vdd_meas
++ PARAM='supply'
 
 .END

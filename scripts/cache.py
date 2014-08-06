@@ -190,7 +190,7 @@ wordline_wire_model = models.WireModel(pitch=wordline_pitch,
                                        l=l)
 
 # the global wire model
-# eperl = energy per bit per mm in nJ/mm assuming activity factor of 0.25
+# eperl = energy per bit per mm in pJ/mm assuming activity factor of 0.25
 # tperl = delay per mm in ns/mm
 global_wire_params = {"eperl": 0.1,
                       "tperl": 0.4}

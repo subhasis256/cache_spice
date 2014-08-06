@@ -1,7 +1,6 @@
 *************************
 ** INCLUDES *************
 *************************
-* .include "/afs/ir.stanford.edu/class/ee313/ee313_spice_header.h"
 .param supply=1
 .option scale=0.022u
 .option accurate post
@@ -12,7 +11,7 @@
 .option list
 .op
 .protect
-.lib '/afs/ir.stanford.edu/class/ee313/lib/opConditions.lib' TTTT
+.lib '/afs/ir.stanford.edu/class/ee313/lib/opConditions.lib' SSSS
 .unprotect
 
 V_supply vdd! 0 dc=supply
