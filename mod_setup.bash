@@ -10,3 +10,4 @@ source /hd/cad/modules/tcl/init/bash
 module load base
 module load hspice
 module load cx
+module load cscope

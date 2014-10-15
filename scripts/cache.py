@@ -36,8 +36,8 @@ def get_square_matrix(x):
         Nw = int((x*2)**0.5)
         Nh = int((x/2)**0.5)
     else:
-        Nw = sqrt
-        Nh = sqrt
+        Nw = sqrt*2
+        Nh = sqrt/2
     return Nw, Nh
 
 class Cache:
@@ -175,6 +175,7 @@ wire_model_params = {"pitch": 0.14,
 
 if "wire_model" in yaml_doc:
     wire_model_params = yaml_doc["wire_model"]
+    wire_model_params["l"] = l
 
 default_wire_model = models.WireModel(**wire_model_params)
 
@@ -195,7 +196,7 @@ wordline_wire_model = models.WireModel(pitch=wordline_pitch,
 global_wire_params = {"eperl": 0.1,
                       "tperl": 0.4}
 if "global_wire_model" in yaml_doc:
-    global_wire_params = yaml_doc["global_wire_params"]
+    global_wire_params = yaml_doc["global_wire_model"]
 
 global_wire_model = global_wire.GlobalWire(**global_wire_params)
 
@@ -224,3 +225,5 @@ print 'Dimensions = %.6f mm x %.6f mm' % (cache.dataarray_size[0]*1e3,
                  cache.dataarray_size[1]*1e3)
 print 'E/access = %.6f nJ' % ((cache.dataarray_energy
                                + cache.tagarray_energy)*1e9,)
+print 'Tag Array Latency = %.6f ns' % (cache.tagarray_delay*1e9,)
+print 'Data Array Latency = %.6f ns' % (cache.dataarray_delay*1e9,)

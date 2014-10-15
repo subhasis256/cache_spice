@@ -17,11 +17,8 @@ class GlobalWire:
 # Lh: height of each array
 # Nw: number of arrays along width dimension (x)
 # Nh: number of arrays along height dimension (y)
-# Nw has to be >= Nh
 # we assume that the H tree brings data to the middle bottom edge
 def get_htree_wire_length(Lw, Lh, Nw, Nh):
-    assert Nw >= Nh, """number of arrays in x dimension should be greater than
-    number of arrays in y dimension, given was Nw = %d Nh = %d""" % (Nw,Nh)
     W = Lw * Nw
     H = Lh * Nh
     arrays_served = Nw*Nh

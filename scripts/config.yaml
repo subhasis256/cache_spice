@@ -1,6 +1,6 @@
 cache:
     physbits: 40 # number of bits in physical address
-    size: 32768 # cache size in bytes
+    size: 4194304 # cache size in bytes
     bsize: 64 # block or line size
     assoc: 8 # associativity
     cin: 12 # maximum input capacitance in terms of lambda
@@ -21,5 +21,5 @@ wire_model:
 
 # global wire parameters
 global_wire_model:
-    eperl: 0.1 # energy/bit/mm in pJ/mm, assuming a activity factor of 0.25
-    tperl: 0.4 # delay per mm in ns/mm
+    eperl: 0.08 # energy/bit/mm in pJ/mm, assuming a activity factor of 0.25
+    tperl: 0.3 # delay per mm in ns/mm
