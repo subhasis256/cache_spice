@@ -6,7 +6,7 @@ else
 export J_CC=gcc
 fi
 
-source /cad/modules/tcl/init/bash
+source /hd/cad/modules/tcl/init/bash
 module load base
 module load hspice
 module load cx
