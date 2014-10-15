@@ -3,10 +3,11 @@ cache_spice
 
 A cache model that uses HSPICE to get better estimates for energy and delay.
 
+You have to have `hspice` in your PATH to be able to use this cache model. `mod_setup.bash` is an example script that works on my system, but may or may not work for you.
+
 To run, modify the appropriate parameters in scripts/config.yaml, then:
 
 ```
-$ source mod_setup.bash
 $ cd scripts
 $ python cache.py config.yaml
 ```
