@@ -164,7 +164,8 @@ class Decoder:
                     resistances.append(0)
                     units.append(2**(2*self.Bp))
 
-            # now insert the gwl sideload and create the gwl to lwl branching factor
+            # now insert the gwl sideload and create the gwl to lwl branching
+            # factor
             branches.append(2**self.Bl)
             sideloads.append(gwl_sideload)
 

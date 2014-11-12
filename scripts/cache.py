@@ -31,6 +31,8 @@ def get_array_height(x):
         return get_array_height(x/2)
 
 def get_square_matrix(x):
+    if x == 1:
+        return (1,1)
     sqrt = int(x**0.5)
     if sqrt * sqrt != x:
         Nw = int((x*2)**0.5)
@@ -99,6 +101,9 @@ class Cache:
 
         # for delay we have to assume twice the htree delay: once for input and
         # then for output
+        self.tagarray_energy_mat = array_energy
+        self.tagarray_energy_wire = htree_energy
+
         self.tagarray_energy = array_energy + htree_energy
         self.tagarray_delay = array_delay + htree_delay*2
         self.tagarray_size = (Lw*Nw, Lh*Nh)
@@ -142,6 +147,9 @@ class Cache:
 
         # for delay we have to assume twice the htree delay: once for input and
         # then for output
+        self.dataarray_energy_mat = array_energy
+        self.dataarray_energy_wire = htree_energy
+
         self.dataarray_energy = array_energy + htree_energy
         self.dataarray_delay = array_delay + htree_delay*2
         self.dataarray_size = (Lw*Nw, Lh*Nh)
@@ -163,7 +171,10 @@ cell_model = models.CellModel(**cell_model_params)
 
 # the minimum pitch version
 # min feature size
-l = 0.022e-6
+if "technology" in yaml_doc:
+    l = yaml_doc["technology"]["lambda"]*1e-6
+else:
+    l = 0.022e-6
 
 # these parameters can be overriden via the yaml file
 # note that these are in um
@@ -225,5 +236,7 @@ print 'Dimensions = %.6f mm x %.6f mm' % (cache.dataarray_size[0]*1e3,
                  cache.dataarray_size[1]*1e3)
 print 'E/access = %.6f nJ' % ((cache.dataarray_energy
                                + cache.tagarray_energy)*1e9,)
+print '  Data Mat energy  = %.6f nJ' % (cache.dataarray_energy_mat*1e9,)
+print '  Data Wire energy = %.6f nJ' % (cache.dataarray_energy_wire*1e9,)
 print 'Tag Array Latency = %.6f ns' % (cache.tagarray_delay*1e9,)
 print 'Data Array Latency = %.6f ns' % (cache.dataarray_delay*1e9,)

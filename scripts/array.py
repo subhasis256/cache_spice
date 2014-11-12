@@ -4,6 +4,9 @@ import gates
 import spiceutils
 import models
 import logic_path
+import sys
+import yaml
+import global_wire
 
 
 class Array:
@@ -70,3 +73,99 @@ class Array:
         # TODO this is hacky
         return total_w/0.8, total_h/0.8
 
+if __name__ == '__main__':
+    yaml_config_file = open(sys.argv[1])
+    yaml_doc = yaml.load(yaml_config_file)
+
+    # these values are in lambda,
+    # cin = total input capacitance of the wordline transistors
+    # w = width (along the wordline)
+    # h = height (along the bitline)
+    cell_model_params = {"cin": 8,
+                         "w": 16,
+                         "h": 40}
+    if "cell_model" in yaml_doc:
+        cell_model_params = yaml_doc["cell_model"]
+
+    cell_model = models.CellModel(**cell_model_params)
+
+    # the minimum pitch version
+    # min feature size
+    if "technology" in yaml_doc:
+        l = yaml_doc["technology"]["lambda"]*1e-6
+    else:
+        l = 0.022e-6
+
+    # these parameters can be overriden via the yaml file
+    # note that these are in um
+    wire_model_params = {"pitch": 0.14,
+                         "width": 0.07,
+                         "height": 0.26,
+                         "thickness": 0.125,
+                         "l": l}
+
+    if "wire_model" in yaml_doc:
+        wire_model_params = yaml_doc["wire_model"]
+        wire_model_params["l"] = l
+
+    default_wire_model = models.WireModel(**wire_model_params)
+
+    # the wordlines
+    # we need a separate model for this since the wordlines have a different pitch
+    # and width
+    wordline_pitch = cell_model.h * default_wire_model.l / 1e-6
+
+    wordline_wire_model = models.WireModel(pitch=wordline_pitch,
+                                           width=wordline_pitch/2,
+                                           thickness=wire_model_params["thickness"],
+                                           height=wire_model_params["height"],
+                                           l=l)
+
+    # the global wire model
+    # eperl = energy per bit per mm in pJ/mm assuming activity factor of 0.25
+    # tperl = delay per mm in ns/mm
+    global_wire_params = {"eperl": 0.1,
+                          "tperl": 0.4}
+    if "global_wire_model" in yaml_doc:
+        global_wire_params = yaml_doc["global_wire_model"]
+
+    global_wire_model = global_wire.GlobalWire(**global_wire_params)
+
+    tech_params = {}
+    tech_params["default_wire_model"] = default_wire_model
+    tech_params["wordline_wire_model"] = wordline_wire_model
+    tech_params["cell_model"] = cell_model
+
+    tech_params["cin"] = yaml_doc["array"]["cin"]
+    # create an approximately square array
+    num_words = yaml_doc["array"]["num_words"]
+    word_width = yaml_doc["array"]["word_width"]
+    total_bits = num_words * word_width
+
+    def floor_sqrt_pwr2(x):
+        sqrt = int(x**0.5)
+        if sqrt*sqrt != x:
+            return int((x/2)**0.5)
+        else:
+            return sqrt
+
+    def log2(x):
+        if x == 1:
+            return 0
+        else:
+            return log2(x/2) + 1
+
+    height = floor_sqrt_pwr2(total_bits)
+
+    Ba = log2(num_words)
+    Bp = log2(height)/2
+    Nl = word_width
+
+    tech_params["Ba"] = Ba
+    tech_params["Bp"] = Bp
+    tech_params["Nl"] = Nl
+
+    array = Array(**tech_params)
+    array.generate()
+
+    print 'Delay = ', array.get_delay(), 'Energy = ', array.get_energy()

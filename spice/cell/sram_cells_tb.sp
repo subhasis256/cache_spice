@@ -11,7 +11,7 @@
 .option list
 .op
 .protect
-.lib '/afs/ir.stanford.edu/class/ee313/lib/opConditions.lib' SSSS
+.lib '/afs/ir.stanford.edu/class/ee313/lib/opConditions.lib' TTTT
 .unprotect
 
 V_supply vdd! 0 dc=supply

@@ -1,5 +1,5 @@
-.param Wn=224.14
-.param Wp=672.41
-.param Wload=2823.478
-.param Rload=57.344
+.param Wn=21.18
+.param Wp=63.54
+.param Wload=176.467
+.param Rload=3.584
 .include "inv.ckt"

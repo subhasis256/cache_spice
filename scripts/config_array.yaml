@@ -1,9 +1,7 @@
-cache:
-    physbits: 40 # number of bits in physical address
-    size: 8192 # cache size in bytes
-    bsize: 8 # block or line size
-    assoc: 8 # associativity
-    cin: 12 # maximum input capacitance in terms of lambda
+array:
+    word_width: 16  # output width in bits
+    num_words: 16384 # number of words, each word is word_width wide
+    cin: 12 # maximum input capacitance in terms of lambda, don't change this
 
 # SRAM cell model parameters
 # lambda = min feature size = 0.5*technology node
