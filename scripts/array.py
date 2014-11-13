@@ -169,3 +169,4 @@ if __name__ == '__main__':
     array.generate()
 
     print 'Delay = ', array.get_delay(), 'Energy = ', array.get_energy()
+    print 'Size = ', ['%.3f mm ' % (x*1e3,) for x in array.get_size()]
