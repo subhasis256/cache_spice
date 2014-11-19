@@ -155,7 +155,10 @@ if __name__ == '__main__':
         else:
             return log2(x/2) + 1
 
-    height = floor_sqrt_pwr2(total_bits)
+    if num_words < word_width:
+        height = num_words
+    else:
+        height = floor_sqrt_pwr2(total_bits)
 
     Ba = log2(num_words)
     Bp = log2(height)/2

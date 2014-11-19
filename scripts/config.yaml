@@ -1,8 +1,8 @@
 cache:
     physbits: 40 # number of bits in physical address
-    size: 8192 # cache size in bytes
+    size: 16777216 # cache size in bytes
     bsize: 8 # block or line size
-    assoc: 8 # associativity
+    assoc: 16 # associativity
     cin: 12 # maximum input capacitance in terms of lambda
 
 # SRAM cell model parameters

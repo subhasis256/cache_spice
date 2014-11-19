@@ -1,6 +1,6 @@
 array:
     word_width: 64 # output width in bits
-    num_words: 1024 # number of words, each word is word_width wide
+    num_words: 32 # number of words, each word is word_width wide
     cin: 12 # maximum input capacitance in terms of lambda, don't change this
 
 # SRAM cell model parameters
