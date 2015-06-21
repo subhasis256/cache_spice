@@ -12,12 +12,13 @@
 .op
 .protect
 .lib '/afs/ir.stanford.edu/class/ee313/lib/opConditions.lib' TTTT
+*.lib '/home/subhasis/cache_spice/spice/ptm-22nm/opConditions.lib' TTB
 .unprotect
 
 V_supply vdd! 0 dc=supply
 
 .param vhalf='supply*0.5'
-.param vdiff=0.150
+.param vdiff=0.250
 
 ************************
 ** PARAMETERS **********
@@ -39,8 +40,8 @@ Vclk clk 0 pwl(    0.000n        0         'thalf' 0
 +                    '2*thalf+10p' 0         '4*thalf'    0)
 
 Vwl0 wl0 0 pwl(    0.000n  0                'thalf+20p'   0
-+                    'thalf+25p'    'supply'  '2*thalf' 'supply'
-+                    '2*thalf+5p'   0         '4*thalf' 0)
++                    'thalf+25p'    'supply'  '2*thalf+25p' 'supply'
++                    '2*thalf+30p'   0         '4*thalf+30p' 0)
 
 Vwln wln 0 0
 
@@ -75,7 +76,7 @@ Vwln wln 0 0
 ***********************
 ** ANALYSIS ***********
 ***********************
-.tran 0.005ns 20.0ns sweep thalf 0.125n 4n 0.125n
+.tran 0.005ns 20.0ns sweep thalf 0.025n 4n 0.1n
 
 .measure tran bl0_delay    trig v(wl0) val='vhalf' rise=1
 +                          targ PAR('abs(v(bl0)-v(bl_b0))') val='vdiff' rise=1

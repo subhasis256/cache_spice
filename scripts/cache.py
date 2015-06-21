@@ -149,8 +149,10 @@ class Cache:
         # then for output
         self.dataarray_energy_mat = array_energy
         self.dataarray_energy_wire = htree_energy
+        self.dataarray_leakage_mat = self.dataarray.get_leakage_power()
 
         self.dataarray_energy = array_energy + htree_energy
+        self.dataarray_leakage = self.dataarray_leakage_mat * Nw * Nh
         self.dataarray_delay = array_delay + htree_delay*2
         self.dataarray_size = (Lw*Nw, Lh*Nh)
 
@@ -238,5 +240,6 @@ print 'E/access = %.6f nJ' % ((cache.dataarray_energy
                                + cache.tagarray_energy)*1e9,)
 print '  Data Mat energy  = %.6f nJ' % (cache.dataarray_energy_mat*1e9,)
 print '  Data Wire energy = %.6f nJ' % (cache.dataarray_energy_wire*1e9,)
+print 'Leakage Power = %.6f W' % (cache.dataarray_leakage,)
 print 'Tag Array Latency = %.6f ns' % (cache.tagarray_delay*1e9,)
 print 'Data Array Latency = %.6f ns' % (cache.dataarray_delay*1e9,)

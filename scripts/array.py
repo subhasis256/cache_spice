@@ -55,6 +55,12 @@ class Array:
         total_energy *= 1e-9
         return total_energy
 
+    def get_leakage_power(self):
+        # get the leakage in the array and then assume that the total leakage
+        # is twice that value acoounting for wires, decoder logic etc
+        sram_leak_energy = float(self.sram_stats["p_leak"])
+        return sram_leak_energy * 2
+
     # return Lw, Lh: the width and height of the array
     def get_size(self):
         # get the sram size
@@ -172,6 +178,7 @@ if __name__ == '__main__':
         else:
             height = floor_sqrt_pwr2(total_bits)
 
+    print num_words, height, word_width
     Ba = log2(num_words)
     Bp = log2(height)/2
     Nl = word_width
@@ -180,8 +187,10 @@ if __name__ == '__main__':
     tech_params["Bp"] = Bp
     tech_params["Nl"] = Nl
 
+    print Ba, Bp, Nl
     array = Array(**tech_params)
     array.generate()
 
     print 'Delay = ', array.get_delay(), 'Energy = ', array.get_energy()
+    print "Leakage Power = ", array.get_leakage_power()
     print 'Size = ', ['%.3f mm ' % (x*1e3,) for x in array.get_size()]

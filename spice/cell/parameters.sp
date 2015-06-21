@@ -1,2 +1,2 @@
-.param Nw=16
-.param Nh=16
+.param Nw=256
+.param Nh=256
